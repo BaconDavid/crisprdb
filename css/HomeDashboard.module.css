@@ -1,0 +1,376 @@
+.main {
+  margin: 0 auto;
+  max-width: 80rem;
+  padding: 3.5rem 1.5rem 4rem;
+  width: 100%;
+}
+
+.hero {
+  margin-bottom: 1.5rem;
+}
+
+.eyebrow {
+  color: #2563eb;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  margin: 0 0 1rem;
+  text-transform: uppercase;
+}
+
+.title {
+  color: #020617;
+  font-size: clamp(2.25rem, 5vw, 4.75rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin: 0;
+}
+
+.description {
+  color: #475569;
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  margin: 1.25rem 0 0;
+  max-width: 42rem;
+}
+
+.mechanismSection {
+  margin-bottom: 2rem;
+}
+
+.mechanismPlaceholder {
+  align-items: center;
+  background: #ffffff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.75rem;
+  color: #64748b;
+  display: flex;
+  min-height: 20rem;
+  padding: 1.5rem;
+  width: 100%;
+}
+
+.mechanismInner {
+  border-left: 3px solid #2563eb;
+  padding-left: 1rem;
+}
+
+.placeholderTitle {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.placeholderText {
+  line-height: 1.6;
+  margin: 0;
+}
+
+.metricsGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.metricCard,
+.panel {
+  background: #ffffff;
+  border: 1px solid #dfe5ee;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 0.04);
+}
+
+.metricCard {
+  background: #ffffff;
+  overflow: hidden;
+  padding: 1.15rem;
+  position: relative;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.metricCard::after {
+  background: var(--metric-accent);
+  bottom: 0;
+  content: "";
+  height: 3px;
+  left: 0;
+  position: absolute;
+  right: 0;
+}
+
+.metricCard:hover {
+  border-color: color-mix(in srgb, var(--metric-accent) 32%, #e2e8f0);
+  box-shadow: 0 8px 18px rgb(15 23 42 / 0.07);
+  transform: translateY(-2px);
+}
+
+.metricHeader {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.metricIcon {
+  align-items: center;
+  background: color-mix(in srgb, var(--metric-accent) 12%, #ffffff);
+  border: 1px solid color-mix(in srgb, var(--metric-accent) 28%, #e2e8f0);
+  border-radius: 0.65rem;
+  color: var(--metric-accent);
+  display: inline-flex;
+  height: 2.35rem;
+  justify-content: center;
+  width: 2.35rem;
+}
+
+.metricSignal {
+  background: var(--metric-accent);
+  border-radius: 999px;
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--metric-accent) 14%, transparent);
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+.metricLabel {
+  color: #64748b;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  margin: 0 0 0.45rem;
+  text-transform: uppercase;
+}
+
+.metricValue {
+  color: #020617;
+  font-size: 2.35rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.metricDetail {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0.35rem 0 0;
+}
+
+.contentGrid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.panel {
+  padding: 1.25rem;
+}
+
+.chartPanel {
+  background: #ffffff;
+  grid-column: 1 / -1;
+  padding: 1.5rem;
+}
+
+.pieCard {
+  min-width: 0;
+  padding: 0.25rem;
+}
+
+.panelHeader {
+  margin-bottom: 1.25rem;
+}
+
+.panelTitle {
+  color: #0f172a;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.pieTitle {
+  color: #0f172a;
+  font-size: 1rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.panelText {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin: 0.4rem 0 0;
+}
+
+.largePieLayout {
+  align-items: center;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(11rem, 0.8fr) minmax(10rem, 1fr);
+}
+
+.largePieChart {
+  height: 14rem;
+  min-width: 0;
+}
+
+.smallPieLayout {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr;
+}
+
+.smallPieChart {
+  height: 8.25rem;
+  min-width: 0;
+  justify-self: center;
+  width: min(100%, 8.75rem);
+}
+
+.topPieGrid {
+  border-bottom: 1px solid #e2e8f0;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.subtypePieGrid {
+  display: grid;
+  gap: 1.25rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.legend {
+  display: grid;
+  align-content: center;
+  gap: 0.55rem;
+}
+
+.legendItem {
+  align-items: center;
+  color: #334155;
+  display: flex;
+  font-size: 0.875rem;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.legendCompact {
+  gap: 0.4rem;
+}
+
+.legendCompact .legendItem {
+  font-size: 0.8125rem;
+}
+
+.legendCompact .legendSwatch {
+  height: 0.55rem;
+  width: 0.55rem;
+}
+
+.legendDense {
+  gap: 0.3rem;
+}
+
+.legendDense .legendItem {
+  font-size: 0.75rem;
+}
+
+.legendDense .legendSwatch {
+  height: 0.5rem;
+  width: 0.5rem;
+}
+
+.subtypePieGrid .pieTitle {
+  font-size: 0.95rem;
+}
+
+.subtypePieGrid .panelText {
+  font-size: 0.8125rem;
+}
+
+.subtypePieGrid .legendItem {
+  font-size: 0.8125rem;
+}
+
+.legendSwatch {
+  border-radius: 999px;
+  flex: 0 0 auto;
+  height: 0.65rem;
+  width: 0.65rem;
+}
+
+.legendValue {
+  color: #0f172a;
+  font-weight: 700;
+  margin-left: auto;
+}
+
+.mapPanel {
+  grid-column: 1 / -1;
+}
+
+.locations {
+  display: grid;
+  gap: 0.7rem;
+  margin-top: 1.25rem;
+}
+
+.locationItem {
+  align-items: center;
+  border-top: 1px solid #e2e8f0;
+  color: #475569;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 0.7rem;
+}
+
+.locationName {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.locationCount {
+  color: #0e7490;
+  font-weight: 700;
+}
+
+@media (max-width: 960px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .topPieGrid,
+  .subtypePieGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .metricsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .main {
+    padding-top: 2rem;
+  }
+
+  .metricsGrid,
+  .largePieLayout,
+  .smallPieLayout,
+  .topPieGrid,
+  .subtypePieGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .largePieChart,
+  .smallPieChart {
+    max-width: 14rem;
+  }
+}
