@@ -1,5 +1,4 @@
 import { CountryChoroplethMap } from "@/components/CountryChoroplethMap";
-import { countrySampleCounts } from "@/data/home";
 import styles from "@/css/HomeDashboard.module.css";
 
 export function CountryDistributionPanel() {
@@ -13,15 +12,6 @@ export function CountryDistributionPanel() {
       </div>
 
       <CountryChoroplethMap />
-
-      <div className={styles.locations}>
-        {countrySampleCounts.map((location) => (
-          <div key={location.country} className={styles.locationItem}>
-            <span className={styles.locationName}>{location.label ?? location.country}</span>
-            <span className={styles.locationCount}>{location.count}</span>
-          </div>
-        ))}
-      </div>
     </article>
   );
 }

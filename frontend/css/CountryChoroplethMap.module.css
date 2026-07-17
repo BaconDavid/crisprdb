@@ -3,11 +3,33 @@
 }
 
 .map {
-  background: #e0f2fe;
+  background: #f7fbff;
   border-radius: 0.75rem;
-  height: 24rem;
-  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  display: block;
+  height: auto;
   width: 100%;
+}
+
+.ocean {
+  fill: #f7fbff;
+}
+
+.country {
+  cursor: pointer;
+  stroke: #ffffff;
+  stroke-linejoin: round;
+  stroke-width: 0.65;
+  transition:
+    filter 140ms ease,
+    stroke-width 140ms ease;
+}
+
+.country:hover,
+.country:focus-visible {
+  filter: brightness(0.94);
+  outline: none;
+  stroke-width: 1.15;
 }
 
 .mapInfo {
@@ -51,6 +73,6 @@
 
 @media (max-width: 640px) {
   .map {
-    height: 18rem;
+    min-height: 16rem;
   }
 }
