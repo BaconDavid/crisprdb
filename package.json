@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "embedding-atlas": "^0.22.0"
+  }
+}
