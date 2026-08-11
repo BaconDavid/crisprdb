@@ -1,5 +1,5 @@
-import { HomeDashboard } from "@/components/HomeDashboard";
-import { Navigation } from "@/components/Navigation";
+import { HomeDashboard } from "@/components/Home/HomeDashboard";
+import { Navigation } from "@/components/Home/Navigation";
 
 export default function Home() {
   return (

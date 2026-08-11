@@ -1,14 +1,16 @@
-import { homeIntro } from "@/data/home";
 import styles from "@/css/HomeDashboard.module.css";
+import messages from "@/data/en.json";
 
 export function HeroSection() {
+  const { home } = messages;
+
   return (
     <>
       <section className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>{homeIntro.eyebrow}</p>
-          <h1 className={styles.title}>{homeIntro.title}</h1>
-          <p className={styles.description}>{homeIntro.description}</p>
+          <p className={styles.eyebrow}>{home.eyebrow}</p>
+          <h1 className={styles.title}>{home.title}</h1>
+          <p className={styles.description}>{home.description}</p>
         </div>
       </section>
 

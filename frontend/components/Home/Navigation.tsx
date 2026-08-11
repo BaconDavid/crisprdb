@@ -1,8 +1,46 @@
-import { siteBrand, siteNav } from "@/data/site";
 import styles from "@/css/Navigation.module.css";
+import messages from "@/data/en.json";
 import { BarChart3, Home, Mail, Search } from "lucide-react";
 
 type NavIconName = "home" | "analysis" | "search" | "contact";
+
+const siteBrand = {
+  name: "CRISPR_Database",
+  href: "/",
+};
+
+const siteNav = [
+  {
+    label: messages.navigation.home,
+    href: "/",
+    icon: "home",
+  },
+  {
+    label: messages.navigation.analysis,
+    href: "#",
+    icon: "analysis",
+    children: [
+      { label: "Blastp", href: "/Analysis/blastp" },
+      { label: "Embedding Search", href: "#" },
+      { label: "Structure Module", href: "#" },
+    ],
+  },
+  {
+    label: messages.navigation.search,
+    href: "#",
+    icon: "search",
+  },
+  {
+    label: messages.navigation.contact,
+    href: "#",
+    icon: "contact",
+  },
+] satisfies Array<{
+  label: string;
+  href: string;
+  icon: NavIconName;
+  children?: Array<{ label: string; href: string }>;
+}>;
 
 function NavIcon({ name }: { name: NavIconName }) {
   const icons = {
@@ -29,7 +67,7 @@ export function Navigation() {
             item.children ? (
               <div key={item.label} className={styles.navItem}>
                 <button type="button" className={styles.navLink}>
-                  <NavIcon name={item.icon as NavIconName} />
+                  <NavIcon name={item.icon} />
                   {item.label}
                 </button>
 
@@ -43,7 +81,7 @@ export function Navigation() {
               </div>
             ) : (
               <a key={item.label} href={item.href} className={styles.navLink}>
-                <NavIcon name={item.icon as NavIconName} />
+                <NavIcon name={item.icon} />
                 {item.label}
               </a>
             ),

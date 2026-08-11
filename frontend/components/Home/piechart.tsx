@@ -48,7 +48,7 @@ export function DistributionPieChart({
         : "";
 
   return (
-    <div className={styles.pieCard}>
+    <div className={`${styles.pieCard} ${variant === "large" ? styles.largePieCard : styles.smallPieCard}`}>
       <div className={styles.panelHeader}>
         <h3 className={styles.pieTitle}>{title}</h3>
         {description ? <p className={styles.panelText}>{description}</p> : null}

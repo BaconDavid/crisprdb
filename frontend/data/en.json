@@ -1,0 +1,13 @@
+{
+  "home": {
+    "eyebrow": "Public CRISPR resource",
+    "title": "CRISPR Database",
+    "description": "A curated portal for browsing CRISPR-Cas operons, genome context, subtype distribution, and related proteins."
+  },
+  "navigation": {
+    "home": "Home",
+    "analysis": "Analysis",
+    "search": "Search",
+    "contact": "Contact"
+  }
+}

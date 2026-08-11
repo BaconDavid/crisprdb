@@ -1,4 +1,4 @@
-import { DistributionPieChart } from "@/components/piechart";
+import { DistributionPieChart } from "@/components/Home/piechart";
 import styles from "@/css/HomeDashboard.module.css";
 
 type DistributionDatum = {
@@ -69,18 +69,18 @@ export function DistributionPanel({
       <div className={styles.panelHeader}>
         <h2 className={styles.panelTitle}>CRISPR distribution overview</h2>
         <p className={styles.panelText}>
-          Synthetic class, type, and subtype composition across 100 Cas operons.
+          Class, type, and subtype composition calculated from database records.
         </p>
       </div>
 
       <div className={styles.topPieGrid}>
         <DistributionPieChart
-          description="Synthetic split across 100 Cas operons."
+          description="Class distribution across CRISPR-Cas operons."
           items={withColors(classDistribution)}
           title="Class distribution"
         />
         <DistributionPieChart
-          description="Synthetic type distribution across 100 Cas operons."
+          description="Type distribution across CRISPR-Cas operons."
           items={withColors(typeDistribution)}
           title="Type distribution"
         />

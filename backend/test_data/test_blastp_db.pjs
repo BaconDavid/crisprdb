@@ -1,0 +1,24 @@
+{
+  "version": "1.2",
+  "dbname": "test_blastp_db",
+  "dbtype": "Protein",
+  "db-version": 5,
+  "description": "CRISPRDB synthetic test proteins",
+  "number-of-letters": 69947,
+  "number-of-sequences": 100,
+  "last-updated": "2026-07-27T22:11:00",
+  "number-of-volumes": 1,
+  "bytes-total": 282548,
+  "bytes-to-cache": 70968,
+  "files": [
+    "test_blastp_db.pdb",
+    "test_blastp_db.phr",
+    "test_blastp_db.pin",
+    "test_blastp_db.pog",
+    "test_blastp_db.pos",
+    "test_blastp_db.pot",
+    "test_blastp_db.psq",
+    "test_blastp_db.ptf",
+    "test_blastp_db.pto"
+  ]
+}
