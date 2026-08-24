@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Play } from "lucide-react";
 
 import { Navigation } from "@/components/Home/Navigation";
@@ -13,6 +13,7 @@ import {
 import { BlastpResult } from "@/components/Analysis/blastp/BlastpResult";
 import { Parameters } from "@/components/Analysis/blastp/Parameters";
 import { SequenceInput } from "@/components/Analysis/blastp/SequenceInput";
+import { fetchCasProtein } from "@/components/Browse/api";
 import type {
   BlastpJob,
   BlastpParameters,
@@ -30,7 +31,11 @@ const DEFAULT_PARAMETERS: BlastpParameters = {
 };
 
 
-export default function BlastpAnalysis() {
+export default function BlastpAnalysis({
+  proteinHeader,
+}: {
+  proteinHeader?: string;
+}) {
   // The page owns shared form and request state; child components only render it.
   const [mode, setMode] = useState<InputMode>("paste");
   const [sequence, setSequence] = useState("");
@@ -39,7 +44,30 @@ export default function BlastpAnalysis() {
   const [job, setJob] = useState<BlastpJob | null>(null);
   const [results, setResults] = useState<BlastpResults | null>(null);
   const [running, setRunning] = useState(false);
+  const [prefillLoading, setPrefillLoading] = useState(Boolean(proteinHeader));
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (!proteinHeader) return;
+
+    const controller = new AbortController();
+    fetchCasProtein(proteinHeader, "cctyper", controller.signal)
+      .then((protein) => {
+        setMode("paste");
+        setFile(null);
+        setSequence(`>${protein.protein_header}\n${protein.sequence.replace(/\s/g, "")}\n`);
+      })
+      .catch((requestError: Error) => {
+        if (requestError.name !== "AbortError") {
+          setError(`Unable to load protein sequence: ${requestError.message}`);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setPrefillLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [proteinHeader]);
 
   async function runBlastp() {
     setError("");
@@ -113,11 +141,11 @@ export default function BlastpAnalysis() {
               <button
                 type="button"
                 className={styles.runBtn}
-                disabled={running}
+                disabled={running || prefillLoading}
                 onClick={runBlastp}
               >
                 <Play size={16} fill="currentColor" strokeWidth={0} />
-                {running ? "Running..." : "Run BLASTP"}
+                {prefillLoading ? "Loading protein..." : running ? "Running..." : "Run BLASTP"}
               </button>
               <button type="button" className={styles.clearBtn} onClick={clearForm}>
                 Clear

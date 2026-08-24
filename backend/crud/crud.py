@@ -187,9 +187,9 @@ def get_operon_proteins(
     return query.limit(limit).all()
 
 
-def get_operon_protein_by_id(db: Session, operon_pro_id: int) -> OperonProtein:
-    # Query one operon-protein link by id.
-    operon_protein = db.query(OperonProtein).filter(OperonProtein.operon_pro_id == operon_pro_id).first()
+def get_operon_protein_by_operon_header(db: Session, operon_header: str) -> OperonProtein:
+    # Query one operon-protein link by operon header.
+    operon_protein = db.query(OperonProtein).filter(OperonProtein.operon_header == operon_header).first()
     if operon_protein is None:
         raise HTTPException(status_code=404, detail="Operon protein link not found")
     return operon_protein

@@ -9,6 +9,7 @@ class Genome(Base):
 
     genome_header = Column(VARCHAR(255), primary_key=True, index=True)
     bioproject = Column(VARCHAR(255))
+    tax_domain = Column(VARCHAR(255))
     tax_phylum = Column(VARCHAR(255))
     tax_class = Column(VARCHAR(255))
     tax_order = Column(VARCHAR(255))
@@ -16,7 +17,6 @@ class Genome(Base):
     tax_genus = Column(VARCHAR(255))
     tax_species = Column(VARCHAR(255))
     strain = Column(VARCHAR(255))
-    tax_domain = Column(VARCHAR(255))
 
 class Operon(Base):
     __tablename__ = "operon"

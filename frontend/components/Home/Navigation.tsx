@@ -27,7 +27,7 @@ const siteNav = [
   },
   {
     label: messages.navigation.search,
-    href: "#",
+    href: "/Browse",
     icon: "search",
   },
   {

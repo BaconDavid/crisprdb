@@ -24,7 +24,9 @@ type CountryDistributionDatum = {
 type HomeStatisticData = {
   countries: Record<string, number>;
   subtypes: Record<string, number>;
+  total_operons: number;
   total_projects: number | null;
+  total_proteins: number;
 };
 
 const API_BASE_URL =
@@ -132,7 +134,12 @@ export async function HomeDashboard() {
   return (
     <main className={styles.main}>
       <HeroSection />
-      <MetricCards totalProjects={homeStatisticData.total_projects} />
+      <MetricCards
+        totalCountries={Object.keys(homeStatisticData.countries).length}
+        totalOperons={homeStatisticData.total_operons}
+        totalProjects={homeStatisticData.total_projects}
+        totalProteins={homeStatisticData.total_proteins}
+      />
 
       <section className={styles.contentGrid}>
         <DistributionPanel
