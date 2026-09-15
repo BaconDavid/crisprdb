@@ -1,0 +1,71 @@
+{
+  "home": {
+    "eyebrow": "Public CRISPR resource",
+    "title": "CRISPR Database",
+    "description": "CRISPR-Cas systems are adaptive immune systems found in bacteria and archaea, where they recognise and destroy invading nucleic acids from bacteriophages and mobile genetic elements. Because these systems have diversified extensively over evolutionary time, they are organised under the current classification scheme into 2 classes, 7 types and 46 subtypes, each distinguished by its signature genes and the architecture of its effector complex.\nCRISPR Database was built to make this diversity easier to explore at scale. It draws on two complementary sources: all complete genomes deposited in NCBI through June 2026, and the contigs linked to CRISPR-associated proteins reported by [Zhang et al.](https://www.science.org/doi/10.1126/science.adi1910). Every record is organised across four levels — environment, genome, cas operon and cas protein.  Cas operons are annotated independently with either CasFinder or CCTyper, while CRISPR arrays are identified with MinCED.\nThe database offers two functional modules for exploration. The Browse module provides an interactive view of cas operon architecture, while the Analysis module supports a series of tools for sequence analysis, including BLASTP, embedding-based search, and structure analysis.",
+    "mechanismText": "Reserved for the future mechanism illustration."
+  },
+
+  "navigation": {
+    "home": "Home",
+    "analysis": "Analysis",
+    "search": "Browse",
+    "contact": "Contact",
+    "blastp": "BLASTP",
+    "embedding": "Embedding Search",
+    "structure": "Structure Module",
+    "switchLanguage": "Switch to Chinese"
+  },
+  "browse": {
+    "eyebrow": "Browse the database",
+    "tabs": {
+      "operon": "Cas Operon",
+      "protein": "Protein",
+      "genome": "Genome (Contig)"
+    },
+    "pages": {
+      "operon": {
+        "title": "Cas Operons",
+        "description": "Filter Cas operons by system classification, sample metadata and taxonomy. Expand any operon to inspect its gene architecture."
+      },
+      "protein": {
+        "title": "CRISPR-associated Proteins",
+        "description": "Browse CRISPR proteins by their selected HMM annotation, Cas operon type, sample metadata and taxonomy."
+      },
+      "genome": {
+        "title": "Genomes / Contigs",
+        "description": "Browse source contigs by originating database, sample metadata and taxonomy. Expand a contig to inspect its lineage and Cas operons."
+      }
+    },
+    "filters": {
+      "title": "Filters",
+      "reset": "Reset all",
+      "noValues": "No values available",
+      "sections": {
+        "casType": "Cas Type",
+        "operonType": "Cas Operon Type",
+        "proteinName": "Protein Name",
+        "sample": "Sample Info",
+        "taxonomy": "Taxon",
+        "source": "Data Source"
+      },
+      "fields": {
+        "crispr_class": "Class",
+        "crispr_type": "Type",
+        "crispr_subtype": "Subtype",
+        "protein_name": "HMM profile annotation",
+        "source": "Source database",
+        "host": "Host",
+        "country": "Country",
+        "lineage_domain": "Domain",
+        "lineage_phylum": "Phylum",
+        "lineage_class": "Class",
+        "lineage_order": "Order",
+        "lineage_family": "Family",
+        "lineage_genus": "Genus",
+        "lineage_species": "Species",
+        "lineage_strain": "Strain"
+      }
+    }
+  }
+}

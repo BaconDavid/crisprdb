@@ -3,31 +3,23 @@
 import { useState } from "react";
 
 import { CasOperonBrowse } from "./CasOperonBrowse";
+import { GenomeBrowse } from "./GenomeBrowse";
 import { ProteinBrowse } from "./ProteinBrowse";
+import { useI18n } from "@/components/I18nProvider";
 import styles from "@/css/Browse.module.css";
 
-type BrowseEntity = "operon" | "protein";
+export type BrowseEntity = "operon" | "protein" | "genome";
 
-const PAGE_COPY = {
-  operon: {
-    title: "Cas Operons",
-    description: "Filter Cas operons by system classification, sample metadata and taxonomy. Expand any operon to inspect its gene architecture.",
-  },
-  protein: {
-    title: "CRISPR-associated Proteins",
-    description: "Browse CRISPR proteins by their selected HMM annotation, Cas operon type, sample metadata and taxonomy.",
-  },
-};
-
-export function Browse() {
-  const [entity, setEntity] = useState<BrowseEntity>("operon");
-  const copy = PAGE_COPY[entity];
+export function Browse({ initialEntity = "operon" }: { initialEntity?: BrowseEntity }) {
+  const [entity, setEntity] = useState<BrowseEntity>(initialEntity);
+  const { messages } = useI18n();
+  const copy = messages.browse.pages[entity];
 
   return (
     <main className={styles.page}>
       <header className={styles.pageHeader}>
         <div>
-          <p className={styles.eyebrow}>Browse the database</p>
+          <p className={styles.eyebrow}>{messages.browse.eyebrow}</p>
           <h1>{copy.title}</h1>
           <p className={styles.description}>{copy.description}</p>
         </div>
@@ -38,7 +30,7 @@ export function Browse() {
             aria-pressed={entity === "operon"}
             onClick={() => setEntity("operon")}
           >
-            Cas Operon
+            {messages.browse.tabs.operon}
           </button>
           <button
             type="button"
@@ -46,15 +38,26 @@ export function Browse() {
             aria-pressed={entity === "protein"}
             onClick={() => setEntity("protein")}
           >
-            Protein
+            {messages.browse.tabs.protein}
           </button>
-          <button type="button" disabled title="Genome browsing will be added next">
-            Genome (Contig)
+          <button
+            type="button"
+            className={entity === "genome" ? styles.activeEntityTab : undefined}
+            aria-pressed={entity === "genome"}
+            onClick={() => setEntity("genome")}
+          >
+            {messages.browse.tabs.genome}
           </button>
         </div>
       </header>
 
-      {entity === "operon" ? <CasOperonBrowse /> : <ProteinBrowse />}
+      {entity === "operon" ? (
+        <CasOperonBrowse />
+      ) : entity === "protein" ? (
+        <ProteinBrowse />
+      ) : (
+        <GenomeBrowse />
+      )}
     </main>
   );
 }

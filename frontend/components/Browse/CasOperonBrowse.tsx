@@ -10,6 +10,7 @@ import {
   fetchCasProtein,
   fetchCasOperonFilters,
   fetchCasOperons,
+  toggleBrowseFilter,
   type BrowseFilters,
   type CasOperon,
   type CasOperonFilterData,
@@ -184,7 +185,7 @@ function GeneCluster({
   );
 }
 
-function OperonDetails({
+export function OperonDetails({
   operon,
   onOpenProtein,
 }: {
@@ -242,6 +243,7 @@ export function CasOperonBrowse() {
   const [detailLoading, setDetailLoading] = useState(false);
   const [detailError, setDetailError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const detailRequest = useRef<AbortController | null>(null);
 
@@ -252,16 +254,21 @@ export function CasOperonBrowse() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchCasOperonFilters(controller.signal)
+    fetchCasOperonFilters(filters, geneRange, controller.signal)
       .then((data) => {
         setFilterData(data);
-        setGeneRange([data.gene_count.minimum, data.gene_count.maximum]);
+        setGeneRange((current) =>
+          current ?? [data.gene_count.minimum, data.gene_count.maximum],
+        );
       })
       .catch((requestError: Error) => {
         if (requestError.name !== "AbortError") setError(requestError.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setFilterLoading(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [filters, geneRange]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -281,23 +288,16 @@ export function CasOperonBrowse() {
 
   function toggleFilter(field: string, value: string) {
     setLoading(true);
+    setFilterLoading(true);
     setError(null);
     closeProtein();
-    setFilters((current) => {
-      const values = current[field] ?? [];
-      const nextValues = values.includes(value)
-        ? values.filter((item) => item !== value)
-        : [...values, value];
-      const next = { ...current };
-      if (nextValues.length > 0) next[field] = nextValues; // if some filed has no values, then delete the field
-      else delete next[field];
-      return next;
-    });
+    setFilters((current) => toggleBrowseFilter(current, field, value));
     setPage(1);
   }
 
   function resetFilters() {
     setLoading(true);
+    setFilterLoading(true);
     setError(null);
     closeProtein();
     setFilters({});
@@ -349,12 +349,18 @@ export function CasOperonBrowse() {
           sections={FILTER_SECTIONS}
           facets={filterData?.facets ?? {}}
           selected={filters}
-          geneBounds={bounds}
-          geneRange={geneRange}
-          loading={!filterData && loading}
+          range={bounds && geneRange ? {
+            bounds,
+            value: geneRange,
+            title: "Number of genes",
+            unit: " genes",
+            hint: "Number of CRISPR-associated proteins in the operon.",
+          } : null}
+          loading={filterLoading}
           onToggle={toggleFilter}
-          onGeneRangeChange={(range) => {
+          onRangeChange={(range) => {
             setLoading(true);
+            setFilterLoading(true);
             setError(null);
             closeProtein();
             setGeneRange(range);

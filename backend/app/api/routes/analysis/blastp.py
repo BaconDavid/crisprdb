@@ -6,7 +6,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from pydantic import BaseModel, Field
 from starlette.concurrency import run_in_threadpool
 
-from app.services.blastp import (
+from app.services.blastp.blastp import (
     BlastpExecutionError,
     BlastpService,
     FastaValidationError,

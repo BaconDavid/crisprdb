@@ -44,6 +44,36 @@ FACET_COLUMNS = {
     "lineage_strain": Genome.strain,
 }
 
+FACET_HIERARCHIES = (
+    ("crispr_class", "crispr_type", "crispr_subtype"),
+    (
+        "lineage_domain",
+        "lineage_phylum",
+        "lineage_class",
+        "lineage_order",
+        "lineage_family",
+        "lineage_genus",
+        "lineage_species",
+        "lineage_strain",
+    ),
+)
+
+
+def filters_for_facet(
+    filters: dict[str, list[str] | list[int] | None],
+    field: str,
+) -> dict[str, list[str] | list[int] | None]:
+    """Keep facet dependencies directional: parent selections narrow children only."""
+    facet_filters = {**filters, field: None}
+    for hierarchy in FACET_HIERARCHIES:
+        if field not in hierarchy:
+            continue
+        field_index = hierarchy.index(field)
+        for descendant in hierarchy[field_index + 1 :]:
+            facet_filters[descendant] = None
+        break
+    return facet_filters
+
 
 def operon_query(db: Session) -> SqlAlchemyQuery:
     """Build the shared query used by list, detail, and facet endpoints."""
@@ -143,12 +173,45 @@ def serialize_operon(row, genes: list[CasOperonGene]) -> CasOperonData:
 
 
 @router.get("/filters", response_model=CasOperonFilterData)
-def get_operon_filters(db: Session = Depends(get_db)):
+def get_operon_filters(
+    crispr_class: list[int] | None = Query(None),
+    crispr_type: list[str] | None = Query(None),
+    crispr_subtype: list[str] | None = Query(None),
+    country: list[str] | None = Query(None),
+    host: list[str] | None = Query(None),
+    lineage_domain: list[str] | None = Query(None),
+    lineage_phylum: list[str] | None = Query(None),
+    lineage_class: list[str] | None = Query(None),
+    lineage_order: list[str] | None = Query(None),
+    lineage_family: list[str] | None = Query(None),
+    lineage_genus: list[str] | None = Query(None),
+    lineage_species: list[str] | None = Query(None),
+    lineage_strain: list[str] | None = Query(None),
+    min_genes: int | None = Query(None, ge=0),
+    max_genes: int | None = Query(None, ge=0),
+    db: Session = Depends(get_db),
+):
+    filters = {
+        "crispr_class": crispr_class,
+        "crispr_type": crispr_type,
+        "crispr_subtype": crispr_subtype,
+        "country": country,
+        "host": host,
+        "lineage_domain": lineage_domain,
+        "lineage_phylum": lineage_phylum,
+        "lineage_class": lineage_class,
+        "lineage_order": lineage_order,
+        "lineage_family": lineage_family,
+        "lineage_genus": lineage_genus,
+        "lineage_species": lineage_species,
+        "lineage_strain": lineage_strain,
+    }
     facets: dict[str, dict[str, int]] = {}
 
     for field, column in FACET_COLUMNS.items():
+        other_filters = filters_for_facet(filters, field)
         rows = (
-            operon_query(db)
+            apply_filters(operon_query(db), other_filters, min_genes, max_genes)
             .with_entities(column, func.count(Operon.operon_header))
             .filter(column.isnot(None))
             .group_by(column)

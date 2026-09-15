@@ -652,6 +652,85 @@
   font-size: 12px;
 }
 
+.genomeOperons {
+  margin-top: 18px;
+}
+
+.genomeOperons h3 {
+  margin: 0 0 10px;
+  color: #475569;
+  font-size: 11.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.genomeOperonTable {
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.genomeOperonHeader,
+.genomeOperonRow {
+  display: grid;
+  min-width: 680px;
+  grid-template-columns: minmax(240px, 2.2fr) 100px minmax(240px, 2fr);
+  gap: 12px;
+  align-items: center;
+}
+
+.genomeOperonHeader {
+  padding: 9px 14px;
+  border-bottom: 1px solid #eef2f7;
+  background: #f8fafc;
+  color: #64748b;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.genomeOperonRow {
+  width: 100%;
+  padding: 10px 14px;
+  border: 0;
+  border-bottom: 1px solid #f1f5f9;
+  background: #fff;
+  color: #0f172a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: background 140ms ease;
+}
+
+.genomeOperonRow:last-child {
+  border-bottom: 0;
+}
+
+.genomeOperonRow:hover {
+  background: #f8fbff;
+}
+
+.genomeOperonRow:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid #2563eb;
+  outline-offset: -2px;
+}
+
+.genomeOperonDetailBody {
+  padding: 24px;
+}
+
+.genomeOperonDetailBody > h2 {
+  margin: 0 0 22px;
+  color: #020617;
+  font-family: var(--font-geist-mono), ui-monospace, Menlo, monospace;
+  font-size: 22px;
+  overflow-wrap: anywhere;
+}
+
 .proteinDetailCard {
   min-width: 0;
   overflow: hidden;

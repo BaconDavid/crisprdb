@@ -19,20 +19,48 @@
 }
 
 .title {
-  color: #020617;
+  background: linear-gradient(105deg, #0f172a 0%, #1d4ed8 56%, #0891b2 100%);
+  background-clip: text;
   font-size: clamp(2.25rem, 5vw, 4.75rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  line-height: 1;
+  font-weight: 750;
+  letter-spacing: -0.04em;
+  line-height: 1.04;
   margin: 0;
+  width: fit-content;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .description {
   color: #475569;
-  font-size: 1.0625rem;
-  line-height: 1.75;
-  margin: 1.25rem 0 0;
-  max-width: 42rem;
+  font-size: clamp(1.125rem, 1.2vw, 1.5rem);
+  line-height: 2;
+  margin: 1.5rem 0 0;
+  max-width: none;
+  white-space: pre-line;
+  width: 100%;
+}
+
+.description p {
+  margin: 0;
+}
+
+.description p + p,
+.description ul,
+.description ol {
+  margin-top: 0.9rem;
+}
+
+.description a {
+  color: #2563eb;
+  font-weight: 650;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+}
+
+.description a:hover {
+  color: #1d4ed8;
 }
 
 .mechanismSection {

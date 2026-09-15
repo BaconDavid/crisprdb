@@ -1,7 +1,5 @@
 """Browse CRISPR-Cas proteins with filters and pagination."""
 
-from collections import Counter
-
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy import Float, cast, func, select
 from sqlalchemy.orm import Query as SqlAlchemyQuery
@@ -45,6 +43,36 @@ FACET_COLUMNS = {
     "lineage_species": Genome.tax_species,
     "lineage_strain": Genome.strain,
 }
+
+FACET_HIERARCHIES = (
+    ("crispr_class", "crispr_type", "crispr_subtype"),
+    (
+        "lineage_domain",
+        "lineage_phylum",
+        "lineage_class",
+        "lineage_order",
+        "lineage_family",
+        "lineage_genus",
+        "lineage_species",
+        "lineage_strain",
+    ),
+)
+
+
+def filters_for_facet(
+    filters: dict[str, list[str] | list[int] | None],
+    field: str,
+) -> dict[str, list[str] | list[int] | None]:
+    """Let parent facets narrow descendants without reverse filtering parents."""
+    facet_filters = {**filters, field: None}
+    for hierarchy in FACET_HIERARCHIES:
+        if field not in hierarchy:
+            continue
+        field_index = hierarchy.index(field)
+        for descendant in hierarchy[field_index + 1 :]:
+            facet_filters[descendant] = None
+        break
+    return facet_filters
 
 
 def protein_query(
@@ -193,23 +221,51 @@ def serialize_protein(
 @router.get("/filters", response_model=CasProteinFilterData)
 def get_protein_filters(
     annotation_source: str = Query("cctyper", min_length=1),
+    crispr_class: list[int] | None = Query(None),
+    crispr_type: list[str] | None = Query(None),
+    crispr_subtype: list[str] | None = Query(None),
+    protein_name: list[str] | None = Query(None),
+    country: list[str] | None = Query(None),
+    host: list[str] | None = Query(None),
+    lineage_domain: list[str] | None = Query(None),
+    lineage_phylum: list[str] | None = Query(None),
+    lineage_class: list[str] | None = Query(None),
+    lineage_order: list[str] | None = Query(None),
+    lineage_family: list[str] | None = Query(None),
+    lineage_genus: list[str] | None = Query(None),
+    lineage_species: list[str] | None = Query(None),
+    lineage_strain: list[str] | None = Query(None),
     db: Session = Depends(get_db),
 ):
-    fields = list(FACET_COLUMNS)
-    rows = (
-        protein_query(db, annotation_source)
-        .with_entities(*(FACET_COLUMNS[field] for field in fields))
-        .all()
-    )
-    facets = {
-        field: {
-            str(value): count
-            for value, count in Counter(
-                row[index] for row in rows if row[index] is not None
-            ).most_common()
-        }
-        for index, field in enumerate(fields)
+    filters = {
+        "crispr_class": crispr_class,
+        "crispr_type": crispr_type,
+        "crispr_subtype": crispr_subtype,
+        "protein_name": protein_name,
+        "country": country,
+        "host": host,
+        "lineage_domain": lineage_domain,
+        "lineage_phylum": lineage_phylum,
+        "lineage_class": lineage_class,
+        "lineage_order": lineage_order,
+        "lineage_family": lineage_family,
+        "lineage_genus": lineage_genus,
+        "lineage_species": lineage_species,
+        "lineage_strain": lineage_strain,
     }
+    facets: dict[str, dict[str, int]] = {}
+
+    for field, column in FACET_COLUMNS.items():
+        other_filters = filters_for_facet(filters, field)
+        rows = (
+            apply_filters(protein_query(db, annotation_source), other_filters)
+            .with_entities(column, func.count(Protein.protein_header))
+            .filter(column.isnot(None))
+            .group_by(column)
+            .order_by(func.count(Protein.protein_header).desc())
+            .all()
+        )
+        facets[field] = {str(value): count for value, count in rows}
 
     return CasProteinFilterData(
         facets=facets,

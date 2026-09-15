@@ -10,6 +10,7 @@ import {
   fetchCasProtein,
   fetchCasProteinFilters,
   fetchCasProteins,
+  toggleBrowseFilter,
   type BrowseFilters,
   type CasProtein,
   type CasProteinFilterData,
@@ -248,6 +249,18 @@ export function ProteinDetailView({
               >
                 Run
               </Link>
+            ) : tool === "structure" ? (
+              <Link
+                href={{
+                  pathname: "/Analysis/structure",
+                  query: { protein: protein.protein_header },
+                }}
+                className={styles.runProteinTool}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Run
+              </Link>
             ) : (
               <button
                 type="button"
@@ -401,19 +414,23 @@ export function ProteinBrowse() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [filterLoading, setFilterLoading] = useState(true);
   const [detailLoading, setDetailLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchCasProteinFilters(ANNOTATION_SOURCE, controller.signal)
+    fetchCasProteinFilters(ANNOTATION_SOURCE, filters, controller.signal)
       .then(setFilterData)
       .catch((requestError: Error) => {
         if (requestError.name !== "AbortError") setError(requestError.message);
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setFilterLoading(false);
       });
     return () => controller.abort();
-  }, []);
+  }, [filters]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -430,18 +447,10 @@ export function ProteinBrowse() {
 
   function toggleFilter(field: string, value: string) {
     setLoading(true);
+    setFilterLoading(true);
     setError(null);
     setSelectedProtein(null);
-    setFilters((current) => {
-      const values = current[field] ?? [];
-      const nextValues = values.includes(value)
-        ? values.filter((item) => item !== value)
-        : [...values, value];
-      const next = { ...current };
-      if (nextValues.length > 0) next[field] = nextValues;
-      else delete next[field];
-      return next;
-    });
+    setFilters((current) => toggleBrowseFilter(current, field, value));
     setPage(1);
   }
 
@@ -467,13 +476,13 @@ export function ProteinBrowse() {
         sections={FILTER_SECTIONS}
         facets={filterData?.facets ?? {}}
         selected={filters}
-        geneBounds={null}
-        geneRange={null}
-        loading={!filterData && loading}
+        range={null}
+        loading={filterLoading}
         onToggle={toggleFilter}
-        onGeneRangeChange={() => undefined}
+        onRangeChange={() => undefined}
         onReset={() => {
           setLoading(true);
+          setFilterLoading(true);
           setError(null);
           setSelectedProtein(null);
           setFilters({});

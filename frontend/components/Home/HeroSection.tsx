@@ -1,26 +1,44 @@
+"use client";
+
+import ReactMarkdown from "react-markdown";
+import { useI18n } from "@/components/I18nProvider";
 import styles from "@/css/HomeDashboard.module.css";
-import messages from "@/data/en.json";
 
 export function HeroSection() {
+  const { messages } = useI18n();
   const { home } = messages;
 
   return (
     <>
       <section className={styles.hero}>
         <div>
-          <p className={styles.eyebrow}>{home.eyebrow}</p>
           <h1 className={styles.title}>{home.title}</h1>
-          <p className={styles.description}>{home.description}</p>
+          <div className={styles.description}>
+            <ReactMarkdown
+              allowedElements={["p", "strong", "em", "ul", "ol", "li", "a"]}
+              components={{
+                a: ({ children, ...props }) => (
+                  <a
+                    {...props}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {children}
+                  </a>
+                ),
+              }}
+            >
+              {home.description}
+            </ReactMarkdown>
+          </div>
         </div>
       </section>
 
       <section className={styles.mechanismSection}>
         <div className={styles.mechanismPlaceholder}>
           <div className={styles.mechanismInner}>
-            <p className={styles.placeholderTitle}>CRISPR mechanism artwork</p>
-            <p className={styles.placeholderText}>
-              Reserved for the future mechanism illustration.
-            </p>
+            <p className={styles.placeholderTitle}>{home.mechanismTitle}</p>
+            <p className={styles.placeholderText}>{home.mechanismText}</p>
           </div>
         </div>
       </section>

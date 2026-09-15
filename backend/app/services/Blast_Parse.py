@@ -8,7 +8,7 @@ from Bio.Align import substitution_matrices
 blosum62 = substitution_matrices.load("BLOSUM62")
 BLASTP_PATH = "/Users/yizhouliu/mamba/envs/fastapi-react/bin/blastp"
 PROTEIN_DB = "/Users/yizhouliu/Library/CloudStorage/OneDrive-Personal/工作/Shenzhen_biosys/Projects/CRISPRDB/crisprcasdb_codex/crisprdb/backend/test_data/test_blastp_db"
-
+print(PROTEIN_DB,'shit')
 
 
 def validate_fasta_file(fasta_file:str) -> bool:

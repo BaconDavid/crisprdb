@@ -1,0 +1,71 @@
+{
+  "home": {
+    "eyebrow": "公共 CRISPR 数据资源",
+    "title": "CRISPR 数据库",
+    "description": "CRISPR Database 是一个综合且易用的研究平台，整合了基因组资源、标准化的 CRISPR-Cas 注释及多种序列分析工具。\n\n本数据库收录了 NCBI 完整基因组，以及 Zhang 等人报道的 CRISPR 相关蛋白所对应的 Contig［参考文献］。在数据可获得的情况下，每条基因组和 Contig 记录均提供环境来源、宿主、地理来源和物种分类谱系等信息。\n\nCRISPR-Cas 位点从两个互补层面进行解析：Cas 操纵子分别使用 CasFinder 和 CCTyper 独立注释，CRISPR 阵列则使用 MINCED 进行识别。\n\n用户可以浏览 Cas 操纵子和相关蛋白、比较不同注释结果，并开展 BLASTP 检索、基于嵌入的相似性搜索和蛋白质结构分析。",
+    "mechanismTitle": "CRISPR 机制示意图",
+    "mechanismText": "此区域预留用于 CRISPR 机制插图。"
+  },
+  "navigation": {
+    "home": "首页",
+    "analysis": "分析",
+    "search": "浏览",
+    "contact": "联系我们",
+    "blastp": "BLASTP",
+    "embedding": "嵌入检索",
+    "structure": "结构模块",
+    "switchLanguage": "切换为英文"
+  },
+  "browse": {
+    "eyebrow": "浏览数据库",
+    "tabs": {
+      "operon": "Cas 操纵子",
+      "protein": "蛋白质",
+      "genome": "基因组（Contig）"
+    },
+    "pages": {
+      "operon": {
+        "title": "Cas 操纵子",
+        "description": "根据系统分类、样本信息和物种分类筛选 Cas 操纵子；展开记录可查看基因组成。"
+      },
+      "protein": {
+        "title": "CRISPR 相关蛋白",
+        "description": "根据 HMM 注释、Cas 操纵子类型、样本信息和物种分类浏览 CRISPR 相关蛋白。"
+      },
+      "genome": {
+        "title": "基因组 / Contig",
+        "description": "根据数据来源、样本信息和物种分类浏览 Contig；展开记录可查看谱系及其包含的 Cas 操纵子。"
+      }
+    },
+    "filters": {
+      "title": "筛选条件",
+      "reset": "全部重置",
+      "noValues": "暂无可用选项",
+      "sections": {
+        "casType": "Cas 类型",
+        "operonType": "Cas 操纵子类型",
+        "proteinName": "蛋白名称",
+        "sample": "样本信息",
+        "taxonomy": "物种分类",
+        "source": "数据来源"
+      },
+      "fields": {
+        "crispr_class": "Class",
+        "crispr_type": "Type",
+        "crispr_subtype": "Subtype",
+        "protein_name": "HMM 模型注释",
+        "source": "来源数据库",
+        "host": "宿主",
+        "country": "国家/地区",
+        "lineage_domain": "域",
+        "lineage_phylum": "门",
+        "lineage_class": "纲",
+        "lineage_order": "目",
+        "lineage_family": "科",
+        "lineage_genus": "属",
+        "lineage_species": "种",
+        "lineage_strain": "菌株"
+      }
+    }
+  }
+}

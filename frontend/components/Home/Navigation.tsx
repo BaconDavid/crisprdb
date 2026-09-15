@@ -1,46 +1,23 @@
+"use client";
+
 import styles from "@/css/Navigation.module.css";
-import messages from "@/data/en.json";
 import { BarChart3, Home, Mail, Search } from "lucide-react";
+
+import { useI18n } from "@/components/I18nProvider";
 
 type NavIconName = "home" | "analysis" | "search" | "contact";
 
 const siteBrand = {
-  name: "CRISPR_Database",
+  name: "CRISPR Database",
   href: "/",
 };
 
-const siteNav = [
-  {
-    label: messages.navigation.home,
-    href: "/",
-    icon: "home",
-  },
-  {
-    label: messages.navigation.analysis,
-    href: "#",
-    icon: "analysis",
-    children: [
-      { label: "Blastp", href: "/Analysis/blastp" },
-      { label: "Embedding Search", href: "#" },
-      { label: "Structure Module", href: "#" },
-    ],
-  },
-  {
-    label: messages.navigation.search,
-    href: "/Browse",
-    icon: "search",
-  },
-  {
-    label: messages.navigation.contact,
-    href: "#",
-    icon: "contact",
-  },
-] satisfies Array<{
+type NavItem = {
   label: string;
   href: string;
   icon: NavIconName;
   children?: Array<{ label: string; href: string }>;
-}>;
+};
 
 function NavIcon({ name }: { name: NavIconName }) {
   const icons = {
@@ -55,6 +32,24 @@ function NavIcon({ name }: { name: NavIconName }) {
 }
 
 export function Navigation() {
+  const { locale, messages, toggleLocale } = useI18n();
+  const nav = messages.navigation;
+  const siteNav: NavItem[] = [
+    { label: nav.home, href: "/", icon: "home" },
+    {
+      label: nav.analysis,
+      href: "#",
+      icon: "analysis",
+      children: [
+        { label: nav.blastp, href: "/Analysis/blastp" },
+        { label: nav.embedding, href: "#" },
+        { label: nav.structure, href: "/Analysis/structure" },
+      ],
+    },
+    { label: nav.search, href: "/Browse", icon: "search" },
+    { label: nav.contact, href: "#", icon: "contact" },
+  ];
+
   return (
     <header className={styles.header}>
       <nav className={styles.nav}>
@@ -86,6 +81,15 @@ export function Navigation() {
               </a>
             ),
           )}
+          <button
+            type="button"
+            className={styles.languageToggle}
+            onClick={toggleLocale}
+            aria-label={nav.switchLanguage}
+            title={nav.switchLanguage}
+          >
+            {locale === "en" ? "中文" : "EN"}
+          </button>
         </div>
       </nav>
     </header>

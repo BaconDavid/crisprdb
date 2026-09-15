@@ -29,8 +29,10 @@ type HomeStatisticData = {
   total_proteins: number;
 };
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://127.0.0.1:8000";
+// Server Components require an absolute URL; this address is never exposed to browsers.
+const API_BASE_URL = (
+  process.env.API_PROXY_TARGET ?? "http://127.0.0.1:8000"
+).replace(/\/$/, "");
 const CLASS_1_TYPES = new Set(["I", "III", "IV"]);
 const CLASS_2_TYPES = new Set(["II", "V", "VI"]);
 const TYPE_ORDER = ["I", "II", "III", "IV", "V", "VI"];
