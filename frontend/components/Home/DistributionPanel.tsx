@@ -18,8 +18,17 @@ type PieDatum = DistributionDatum & {
 
 const fallbackColors = ["#2563eb", "#f97316", "#10b981", "#8b5cf6", "#ec4899", "#eab308"];
 
+const subtypeColorsByType: Record<string, string[]> = {
+  I: ["#1d4ed8", "#2563eb", "#3b82f6", "#60a5fa", "#93c5fd", "#bfdbfe"],
+  II: ["#c2410c", "#ea580c", "#f97316", "#fb923c", "#fdba74", "#fed7aa"],
+  III: ["#047857", "#059669", "#10b981", "#34d399", "#6ee7b7", "#a7f3d0"],
+  IV: ["#6d28d9", "#7c3aed", "#8b5cf6", "#a78bfa", "#c4b5fd", "#ddd6fe"],
+  V: ["#be185d", "#db2777", "#ec4899", "#f472b6", "#f9a8d4", "#fbcfe8"],
+  VI: ["#a16207", "#ca8a04", "#eab308", "#facc15", "#fde047", "#fef08a"],
+};
+
 const colorByLabel: Record<string, string> = {
-  "Class 1": "#1d4ed8",
+  "Class 1": "#2563eb",
   "Class 2": "#f97316",
   "Type I": "#2563eb",
   "Type II": "#f97316",
@@ -55,6 +64,16 @@ function withColors(items: DistributionDatum[]): PieDatum[] {
   }));
 }
 
+function withSubtypeColors(items: DistributionDatum[], typeTitle: string): PieDatum[] {
+  const typeName = typeTitle.replace(/^Type\s+/i, "");
+  const palette = subtypeColorsByType[typeName] ?? fallbackColors;
+
+  return items.map((item, index) => ({
+    ...item,
+    color: palette[index % palette.length],
+  }));
+}
+
 export function DistributionPanel({
   classDistribution,
   subtypeDistribution,
@@ -65,38 +84,47 @@ export function DistributionPanel({
   typeDistribution: DistributionDatum[];
 }) {
   return (
-    <article className={`${styles.panel} ${styles.chartPanel}`}>
-      <div className={styles.panelHeader}>
-        <h2 className={styles.panelTitle}>CRISPR distribution overview</h2>
-        <p className={styles.panelText}>
-          Class, type, and subtype composition calculated from database records.
-        </p>
-      </div>
+    <>
+      <article className={`${styles.panel} ${styles.overviewDistributionCard}`}>
+        <div className={styles.distributionCardHeader}>
+          <h2 className={styles.distributionCardTitle}>Class &amp; type distribution</h2>
+          <p className={styles.panelText}>
+            Overall CRISPR-Cas composition across all annotated operons.
+          </p>
+        </div>
 
-      <div className={styles.topPieGrid}>
-        <DistributionPieChart
-          description="Class distribution across CRISPR-Cas operons."
-          items={withColors(classDistribution)}
-          title="Class distribution"
-        />
-        <DistributionPieChart
-          description="Type distribution across CRISPR-Cas operons."
-          items={withColors(typeDistribution)}
-          title="Type distribution"
-        />
-      </div>
-
-      <div className={styles.subtypePieGrid} aria-label="Subtype pie charts">
-        {subtypeDistribution.map((chart) => (
+        <div className={styles.overviewChartGrid}>
           <DistributionPieChart
-            description={chart.description}
-            items={withColors(chart.items)}
-            key={chart.title}
-            title={`Subtype ${chart.title.replace("Type ", "")}`}
-            variant="small"
+            items={withColors(classDistribution)}
+            title="Class"
+            variant="compact"
           />
-        ))}
-      </div>
-    </article>
+          <DistributionPieChart
+            items={withColors(typeDistribution)}
+            legendLayout="grid"
+            title="Type"
+            variant="compact"
+          />
+        </div>
+      </article>
+
+      <article className={`${styles.panel} ${styles.subtypeDistributionCard}`}>
+        <div className={styles.distributionCardHeader}>
+          <h2 className={styles.distributionCardTitle}>Subtype distribution</h2>
+          <p className={styles.panelText}>Subtype composition grouped by CRISPR type.</p>
+        </div>
+
+        <div className={styles.subtypeChartGrid} aria-label="Subtype distributions by CRISPR type">
+          {subtypeDistribution.map((chart) => (
+            <DistributionPieChart
+              items={withSubtypeColors(chart.items, chart.title)}
+              key={chart.title}
+              title={chart.title}
+              variant="mini"
+            />
+          ))}
+        </div>
+      </article>
+    </>
   );
 }

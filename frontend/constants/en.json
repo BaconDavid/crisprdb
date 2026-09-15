@@ -3,6 +3,7 @@
     "eyebrow": "Public CRISPR resource",
     "title": "CRISPR Database",
     "description": "CRISPR-Cas systems are adaptive immune systems found in bacteria and archaea, where they recognise and destroy invading nucleic acids from bacteriophages and mobile genetic elements. Because these systems have diversified extensively over evolutionary time, they are organised under the current classification scheme into 2 classes, 7 types and 46 subtypes, each distinguished by its signature genes and the architecture of its effector complex.\nCRISPR Database was built to make this diversity easier to explore at scale. It draws on two complementary sources: all complete genomes deposited in NCBI through June 2026, and the contigs linked to CRISPR-associated proteins reported by [Zhang et al.](https://www.science.org/doi/10.1126/science.adi1910). Every record is organised across four levels — environment, genome, cas operon and cas protein.  Cas operons are annotated independently with either CasFinder or CCTyper, while CRISPR arrays are identified with MinCED.\nThe database offers two functional modules for exploration. The Browse module provides an interactive view of cas operon architecture, while the Analysis module supports a series of tools for sequence analysis, including BLASTP, embedding-based search, and structure analysis.",
+    "mechanismTitle": "CRISPR mechanism illustration",
     "mechanismText": "Reserved for the future mechanism illustration."
   },
 
