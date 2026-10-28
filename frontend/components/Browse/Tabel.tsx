@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
-import { ChevronRight } from "lucide-react";
+import { ChevronDown, ChevronRight, ChevronUp, Search } from "lucide-react";
 
+import { SelectControl } from "@/components/ui/SelectControl";
 import styles from "@/css/Browse.module.css";
 
 export interface BrowseColumn<Row> {
@@ -9,11 +10,15 @@ export interface BrowseColumn<Row> {
   render: (row: Row) => ReactNode;
 }
 
+export type SortDirection = "asc" | "desc";
+
 interface BrowseTableProps<Row> {
   entityNoun: string;
+  toolbarLeading?: ReactNode;
   showChevron?: boolean;
   columns: BrowseColumn<Row>[];
   gridTemplate: string;
+  minWidth?: number;
   rows: Row[];
   total: number;
   page: number;
@@ -26,13 +31,18 @@ interface BrowseTableProps<Row> {
   onToggleRow: (row: Row) => void;
   onPageChange: (page: number) => void;
   onPageSizeChange: (size: number) => void;
+  sortKey?: string;
+  sortDirection?: SortDirection;
+  onSortChange?: (key: string, direction: SortDirection) => void;
 }
 
 export function BrowseTable<Row>({
   entityNoun,
+  toolbarLeading,
   showChevron = true,
   columns,
   gridTemplate,
+  minWidth = 760,
   rows,
   total,
   page,
@@ -45,6 +55,9 @@ export function BrowseTable<Row>({
   onToggleRow,
   onPageChange,
   onPageSizeChange,
+  sortKey,
+  sortDirection = "asc",
+  onSortChange,
 }: BrowseTableProps<Row>) {
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const start = total === 0 ? 0 : (page - 1) * pageSize + 1;
@@ -58,27 +71,74 @@ export function BrowseTable<Row>({
   return (
     <div className={styles.tableArea}>
       <div className={styles.tableToolbar}>
-        <p>
+        {toolbarLeading && (
+          <div className={styles.tableToolbarLeading}>{toolbarLeading}</div>
+        )}
+        <div className={styles.pageSizeControl}>
+          <span>Rows per page</span>
+          <SelectControl
+            className={styles.pageSizeSelect}
+            ariaLabel="Rows per page"
+            value={String(pageSize)}
+            options={[
+              { value: "10", label: "10" },
+              { value: "30", label: "30" },
+              { value: "50", label: "50" },
+            ]}
+            onValueChange={(nextPageSize) =>
+              onPageSizeChange(Number(nextPageSize))
+            }
+          />
+        </div>
+        <label className={styles.tableSearch}>
+          <Search aria-hidden="true" size={18} />
+          <input
+            type="search"
+            aria-label={`Search ${entityNoun}`}
+            placeholder={`Search ${entityNoun}`}
+          />
+        </label>
+        <p className={styles.matchCount}>
           <strong>{total.toLocaleString()}</strong> {entityNoun} match
         </p>
-        <label className={styles.pageSizeControl}>
-          Rows per page
-          <select
-            value={pageSize}
-            onChange={(event) => onPageSizeChange(Number(event.target.value))}
-          >
-            <option value={10}>10</option>
-            <option value={30}>30</option>
-            <option value={50}>50</option>
-          </select>
-        </label>
       </div>
 
       <div className={styles.tableCard} aria-busy={loading}>
-        <div className={styles.tableHeader} style={{ gridTemplateColumns: gridTemplate }}>
-          {columns.map((column) => (
-            <span key={column.key}>{column.label}</span>
-          ))}
+        <div
+          className={styles.tableHeader}
+          role="row"
+          style={{ gridTemplateColumns: gridTemplate, minWidth }}
+        >
+          {columns.map((column) => {
+            const active = sortKey === column.key;
+            return (
+              <div
+                className={styles.tableHeaderCell}
+                key={column.key}
+                role="columnheader"
+                aria-sort={active ? (sortDirection === "asc" ? "ascending" : "descending") : "none"}
+              >
+                {onSortChange ? (
+                  <button
+                    type="button"
+                    className={styles.sortButton}
+                    onClick={() => onSortChange(
+                      column.key,
+                      active && sortDirection === "asc" ? "desc" : "asc",
+                    )}
+                  >
+                    <span>{column.label}</span>
+                    <span className={styles.sortIndicators} aria-hidden="true">
+                      <ChevronUp className={active && sortDirection === "asc" ? styles.sortActive : ""} size={11} />
+                      <ChevronDown className={active && sortDirection === "desc" ? styles.sortActive : ""} size={11} />
+                    </span>
+                  </button>
+                ) : (
+                  <span>{column.label}</span>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         {loading && rows.length === 0 && (
@@ -106,7 +166,7 @@ export function BrowseTable<Row>({
           const rowId = getRowId(row);
           const isExpanded = expandedRowId === rowId;
           return (
-            <div key={rowId} className={styles.tableRecord}>
+            <div key={rowId} className={styles.tableRecord} style={{ minWidth }}>
               <button
                 type="button"
                 className={`${styles.tableRow} ${isExpanded ? styles.tableRowOpen : ""}`}

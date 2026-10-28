@@ -158,3 +158,9 @@ class Users(Base):
 
     username = Column(VARCHAR(255), primary_key=True, index=True)
     password = Column(TEXT)
+
+class ProteinEmbedding(Base):
+    __tablename__ = "protein_embedding"
+    
+    protein_header = Column(VARCHAR(255), ForeignKey("protein.protein_header", ondelete="CASCADE"), primary_key=True, index=True)
+    embedding = Column(REAL, nullable=False)

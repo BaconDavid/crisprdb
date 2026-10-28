@@ -1,9 +1,10 @@
 """Browse CRISPR-Cas operons with filters and pagination."""
 
 from collections import defaultdict
+from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, Query
-from sqlalchemy import func
+from sqlalchemy import func, select
 from sqlalchemy.orm import Query as SqlAlchemyQuery
 from sqlalchemy.orm import Session
 
@@ -172,6 +173,36 @@ def serialize_operon(row, genes: list[CasOperonGene]) -> CasOperonData:
     )
 
 
+def operon_sort_expression(sort_by: str):
+    """Return a safe database expression for the requested table column."""
+    if sort_by == "n_genes":
+        return func.coalesce(Operon.n_genes, 0)
+    if sort_by == "cas_pro_component":
+        selected_annotation = (
+            select(Annotation.annotation_name)
+            .where(
+                Annotation.protein_header == Protein.protein_header,
+                Annotation.source_db == "cctyper",
+                Annotation.annotation_name.is_not(None),
+            )
+            .order_by(Annotation.annotation_id)
+            .limit(1)
+            .correlate(Protein)
+            .scalar_subquery()
+        )
+        return (
+            select(func.coalesce(selected_annotation, Protein.protein_header))
+            .select_from(OperonProtein)
+            .join(Protein, Protein.protein_header == OperonProtein.protein_header)
+            .where(OperonProtein.operon_header == Operon.operon_header)
+            .order_by(Protein.start_pos)
+            .limit(1)
+            .correlate(Operon)
+            .scalar_subquery()
+        )
+    return Operon.operon_header
+
+
 @router.get("/filters", response_model=CasOperonFilterData)
 def get_operon_filters(
     crispr_class: list[int] | None = Query(None),
@@ -246,6 +277,10 @@ def list_operons(
     lineage_strain: list[str] | None = Query(None),
     min_genes: int | None = Query(None, ge=0),
     max_genes: int | None = Query(None, ge=0),
+    sort_by: Literal["operon_header", "n_genes", "cas_pro_component"] = Query(
+        "operon_header"
+    ),
+    sort_direction: Literal["asc", "desc"] = Query("asc"),
     db: Session = Depends(get_db),
 ):
     filters = {
@@ -265,8 +300,14 @@ def list_operons(
     }
     query = apply_filters(operon_query(db), filters, min_genes, max_genes)
     total = query.with_entities(func.count(Operon.operon_header)).scalar() or 0
+    sort_expression = operon_sort_expression(sort_by)
+    sort_order = (
+        sort_expression.desc().nullslast()
+        if sort_direction == "desc"
+        else sort_expression.asc().nullslast()
+    )
     rows = (
-        query.order_by(Operon.operon_header)
+        query.order_by(sort_order, Operon.operon_header.asc())
         .offset((page - 1) * page_size)
         .limit(page_size)
         .all()

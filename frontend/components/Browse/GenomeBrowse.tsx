@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 
 import { OperonDetails } from "./CasOperonBrowse";
 import { FilterTab, type FilterSection } from "./FilterTab";
@@ -163,7 +163,11 @@ function GenomeDetails({
   );
 }
 
-export function GenomeBrowse() {
+export function GenomeBrowse({
+  toolbarLeading,
+}: {
+  toolbarLeading?: ReactNode;
+}) {
   const [filterData, setFilterData] = useState<CasGenomeFilterData | null>(null);
   const [filters, setFilters] = useState<BrowseFilters>({});
   const [operonRange, setOperonRange] = useState<[number, number] | null>(null);
@@ -333,6 +337,7 @@ export function GenomeBrowse() {
       ) : (
         <BrowseTable
           entityNoun="contigs"
+          toolbarLeading={toolbarLeading}
           columns={COLUMNS}
           gridTemplate="minmax(280px, 2.6fr) 150px 150px 130px"
           rows={result.items}

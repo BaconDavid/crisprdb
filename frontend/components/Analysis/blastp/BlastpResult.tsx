@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { ChevronRight, Search } from "lucide-react";
+import Link from "next/link";
 
 import styles from "@/css/Blastp.module.css";
 
@@ -27,7 +28,7 @@ function formatEValue(value: number) {
 
 // Split long alignments into fixed-width blocks with aligned coordinates.
 function formatAlignment(alignment: BlastpAlignment) {
-  const lineWidth = 60;
+  const lineWidth = 180;
   const positionWidth = Math.max(
     alignment.query_end,
     alignment.subject_end,
@@ -184,22 +185,34 @@ export function BlastpResult({
 
               {hits.map((hit) => {
                 const open = expandedHit === hit.hit_id;
+                const alignmentId = `blastp-alignment-${hit.hit_id}`;
                 return (
                   <div className={styles.hitRow} key={hit.hit_id}>
-                    <button
-                      type="button"
-                      className={styles.hitMain}
-                      aria-expanded={open}
-                      onClick={() => toggleHit(hit)}
-                    >
+                    <div className={styles.hitMain}>
+                      <button
+                        type="button"
+                        className={styles.hitToggle}
+                        aria-expanded={open}
+                        aria-controls={alignmentId}
+                        aria-label={`${open ? "Hide" : "Show"} alignment for ${hit.sseqid}`}
+                        onClick={() => toggleHit(hit)}
+                      />
                       <ChevronRight
+                        aria-hidden="true"
                         className={open ? styles.chevronOpen : ""}
                         size={16}
                       />
-                      <span className={styles.subject}>
+                      <Link
+                        className={styles.subject}
+                        href={{
+                          pathname: "/Browse",
+                          query: { entity: "protein", protein: hit.sseqid },
+                        }}
+                        title={`Open ${hit.sseqid} in Protein Browse`}
+                      >
                         <strong>{hit.sseqid}</strong>
                         <small>{hit.stitle}</small>
-                      </span>
+                      </Link>
                       <span className={styles.identityCell}>
                         <span className={styles.identityTrack}>
                           <span style={{ width: `${hit.pident}%` }} />
@@ -212,10 +225,10 @@ export function BlastpResult({
                       <span>
                         <strong>{hit.bitscore.toFixed(1)}</strong>
                       </span>
-                    </button>
+                    </div>
 
                     {open && (
-                      <div className={styles.expand}>
+                      <div className={styles.expand} id={alignmentId}>
                         <div className={styles.alnMeta}>
                           <span>
                             Query range <strong>{hit.qstart}–{hit.qend}</strong>

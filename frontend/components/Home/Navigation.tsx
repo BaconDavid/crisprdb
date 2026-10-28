@@ -42,7 +42,7 @@ export function Navigation() {
       icon: "analysis",
       children: [
         { label: nav.blastp, href: "/Analysis/blastp" },
-        { label: nav.embedding, href: "#" },
+        { label: nav.embedding, href: "/Analysis/embedding" },
         { label: nav.structure, href: "/Analysis/structure" },
       ],
     },

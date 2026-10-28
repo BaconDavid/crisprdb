@@ -1,19 +1,63 @@
 "use client";
 
 import { useState } from "react";
+import { Database } from "lucide-react";
 
 import { CasOperonBrowse } from "./CasOperonBrowse";
 import { GenomeBrowse } from "./GenomeBrowse";
 import { ProteinBrowse } from "./ProteinBrowse";
 import { useI18n } from "@/components/I18nProvider";
+import { SelectControl } from "@/components/ui/SelectControl";
 import styles from "@/css/Browse.module.css";
 
 export type BrowseEntity = "operon" | "protein" | "genome";
 
-export function Browse({ initialEntity = "operon" }: { initialEntity?: BrowseEntity }) {
+export function Browse({
+  initialEntity = "operon",
+  initialProteinHeader,
+}: {
+  initialEntity?: BrowseEntity;
+  initialProteinHeader?: string;
+}) {
   const [entity, setEntity] = useState<BrowseEntity>(initialEntity);
   const { messages } = useI18n();
   const copy = messages.browse.pages[entity];
+  const entitySelector = (
+    <div className={styles.entitySelector}>
+      <span className={styles.entitySelectorIcon} aria-hidden="true">
+        <Database size={18} />
+      </span>
+      <span className={styles.entitySelectorText}>
+        <small>Browse view</small>
+        <strong>{copy.title}</strong>
+      </span>
+      <SelectControl
+        value={entity}
+        ariaLabel="Browse entity"
+        controlSize="large"
+        fullWidth
+        variant="accent"
+        options={[
+          {
+            value: "operon",
+            label: messages.browse.tabs.operon,
+            iconSrc: "/icons/operon.svg",
+          },
+          {
+            value: "protein",
+            label: messages.browse.tabs.protein,
+            iconSrc: "/icons/protein.svg",
+          },
+          {
+            value: "genome",
+            label: messages.browse.tabs.genome,
+            iconSrc: "/icons/genome.svg",
+          },
+        ]}
+        onValueChange={(nextEntity) => setEntity(nextEntity as BrowseEntity)}
+      />
+    </div>
+  );
 
   return (
     <main className={styles.page}>
@@ -23,40 +67,17 @@ export function Browse({ initialEntity = "operon" }: { initialEntity?: BrowseEnt
           <h1>{copy.title}</h1>
           <p className={styles.description}>{copy.description}</p>
         </div>
-        <div className={styles.entityTabs} aria-label="Browse entity">
-          <button
-            type="button"
-            className={entity === "operon" ? styles.activeEntityTab : undefined}
-            aria-pressed={entity === "operon"}
-            onClick={() => setEntity("operon")}
-          >
-            {messages.browse.tabs.operon}
-          </button>
-          <button
-            type="button"
-            className={entity === "protein" ? styles.activeEntityTab : undefined}
-            aria-pressed={entity === "protein"}
-            onClick={() => setEntity("protein")}
-          >
-            {messages.browse.tabs.protein}
-          </button>
-          <button
-            type="button"
-            className={entity === "genome" ? styles.activeEntityTab : undefined}
-            aria-pressed={entity === "genome"}
-            onClick={() => setEntity("genome")}
-          >
-            {messages.browse.tabs.genome}
-          </button>
-        </div>
       </header>
 
       {entity === "operon" ? (
-        <CasOperonBrowse />
+        <CasOperonBrowse toolbarLeading={entitySelector} />
       ) : entity === "protein" ? (
-        <ProteinBrowse />
+        <ProteinBrowse
+          initialProteinHeader={initialProteinHeader}
+          toolbarLeading={entitySelector}
+        />
       ) : (
-        <GenomeBrowse />
+        <GenomeBrowse toolbarLeading={entitySelector} />
       )}
     </main>
   );

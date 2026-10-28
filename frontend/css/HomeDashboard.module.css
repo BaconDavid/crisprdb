@@ -273,7 +273,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  padding: 1rem;
+  padding: 1.25rem;
+}
+
+.compactPieCard .pieCardHeader {
+  margin-bottom: 0.5rem;
+}
+
+.compactPieCard .pieTitle {
+  font-size: clamp(1.15rem, 1vw, 1.35rem);
 }
 
 .pieCardHeader {
@@ -304,7 +312,7 @@
 .compactDoughnutLayout {
   align-content: center;
   flex: 1;
-  gap: 1rem;
+  gap: 1.25rem;
   grid-template-columns: 1fr;
 }
 
@@ -329,8 +337,30 @@
 }
 
 .compactDoughnutChart {
-  height: 12rem;
-  max-width: 12rem;
+  height: clamp(16rem, 17vw, 20rem);
+  max-width: 20rem;
+}
+
+.compactDoughnutLayout .doughnutCenter strong {
+  font-size: clamp(1.4rem, 1.2vw, 1.75rem);
+}
+
+.compactDoughnutLayout .doughnutCenter span {
+  font-size: 0.75rem;
+}
+
+.compactDoughnutLayout .legend {
+  gap: 0.65rem;
+}
+
+.compactDoughnutLayout .legendItem {
+  font-size: clamp(0.9rem, 0.8vw, 1rem);
+  gap: 0.55rem;
+}
+
+.compactDoughnutLayout .legendSwatch {
+  height: 0.75rem;
+  width: 0.75rem;
 }
 
 .miniDoughnutChart {
@@ -519,6 +549,10 @@
   grid-column: 1 / -1;
 }
 
+.mapPanel .panelHeader {
+  text-align: center;
+}
+
 .locations {
   display: grid;
   gap: 0.7rem;
@@ -578,6 +612,10 @@
   .largeDoughnutChart,
   .compactDoughnutChart {
     max-width: 14rem;
+  }
+
+  .compactDoughnutChart {
+    height: 14rem;
   }
 
   .overviewDistributionCard,

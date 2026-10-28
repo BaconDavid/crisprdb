@@ -512,11 +512,10 @@
 
 .hitMain {
   background: #ffffff;
-  border: 0;
   color: #334155;
   cursor: pointer;
-  font: inherit;
   padding: 0.9rem 1.25rem;
+  position: relative;
   text-align: left;
   transition: background 120ms ease;
   width: 100%;
@@ -524,6 +523,28 @@
 
 .hitMain:hover {
   background: #fafbfd;
+}
+
+.hitToggle {
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  inset: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.hitMain:has(.hitToggle:focus-visible) {
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: -3px;
+}
+
+.hitMain > svg,
+.hitMain > span {
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
 }
 
 .hitMain > span:not(.subject):not(.identityCell) {
@@ -541,7 +562,22 @@
 }
 
 .subject {
+  color: inherit;
   min-width: 0;
+  position: relative;
+  text-decoration: none;
+  z-index: 3;
+}
+
+.subject:hover strong {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.subject:focus-visible {
+  border-radius: 0.25rem;
+  outline: 3px solid rgb(37 99 235 / 0.22);
+  outline-offset: 2px;
 }
 
 .subject strong {
@@ -599,7 +635,9 @@
 
 .expand {
   background: #fbfcfe;
-  padding: 0.5rem 1.25rem 1.15rem 3rem;
+  box-sizing: border-box;
+  padding: 0.5rem 1.25rem 1.15rem;
+  width: 100%;
 }
 
 .alnMeta {
@@ -633,6 +671,7 @@
   overflow-x: auto;
   padding: 0.875rem 1rem;
   white-space: pre;
+  width: 100%;
 }
 
 .alignmentError {

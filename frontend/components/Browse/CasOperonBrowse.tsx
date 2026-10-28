@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 
 import { FilterTab, type FilterSection } from "./FilterTab";
 import { ProteinDetailView } from "./ProteinBrowse";
@@ -16,6 +16,7 @@ import {
   type CasOperonFilterData,
   type CasOperonListResponse,
   type CasProtein,
+  type SortDirection,
 } from "./api";
 import styles from "@/css/Browse.module.css";
 
@@ -69,11 +70,15 @@ const COLUMNS: BrowseColumn<CasOperon>[] = [
   {
     key: "cas_pro_component",
     label: "cas_pro_component",
-    render: (operon) => (
-      <span className={styles.componentList}>
-        {operon.genes.map(geneName).join(" | ") || "No protein records"}
-      </span>
-    ),
+    render: (operon) => {
+      const components =
+        operon.genes.map(geneName).join(" | ") || "No protein records";
+      return (
+        <span className={styles.componentList} title={components}>
+          {components}
+        </span>
+      );
+    },
   },
 ];
 
@@ -229,7 +234,11 @@ export function OperonDetails({
   );
 }
 
-export function CasOperonBrowse() {
+export function CasOperonBrowse({
+  toolbarLeading,
+}: {
+  toolbarLeading?: ReactNode;
+}) {
   const [filterData, setFilterData] = useState<CasOperonFilterData | null>(null);
   const [filters, setFilters] = useState<BrowseFilters>({});
   const [geneRange, setGeneRange] = useState<[number, number] | null>(null);
@@ -238,6 +247,8 @@ export function CasOperonBrowse() {
   });
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [sortKey, setSortKey] = useState("operon_header");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
   const [expandedRowId, setExpandedRowId] = useState<string | null>(null);
   const [selectedProtein, setSelectedProtein] = useState<CasProtein | null>(null);
   const [detailLoading, setDetailLoading] = useState(false);
@@ -272,7 +283,15 @@ export function CasOperonBrowse() {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchCasOperons(filters, geneRange, page, pageSize, controller.signal)
+    fetchCasOperons(
+      filters,
+      geneRange,
+      page,
+      pageSize,
+      sortKey,
+      sortDirection,
+      controller.signal,
+    )
       .then((data) => {
         setResult(data);
         setExpandedRowId(null);
@@ -284,7 +303,7 @@ export function CasOperonBrowse() {
         if (!controller.signal.aborted) setLoading(false);
       });
     return () => controller.abort();
-  }, [filters, geneRange, page, pageSize]);
+  }, [filters, geneRange, page, pageSize, sortKey, sortDirection]);
 
   function toggleFilter(field: string, value: string) {
     setLoading(true);
@@ -403,38 +422,50 @@ export function CasOperonBrowse() {
           </section>
         ) : (
           <BrowseTable
-          entityNoun="operons"
-          columns={COLUMNS}
-          gridTemplate="minmax(260px, 2.3fr) 110px minmax(320px, 2.4fr)"
-          rows={result.items}
-          total={result.total}
-          page={page}
-          pageSize={pageSize}
-          loading={loading}
-          error={error}
-          expandedRowId={expandedRowId}
-          getRowId={(operon) => operon.operon_header}
-          renderExpanded={(operon) => (
-            <OperonDetails operon={operon} onOpenProtein={openProtein} />
-          )}
-          onToggleRow={(operon) => {
-            setExpandedRowId((current) =>
-              current === operon.operon_header ? null : operon.operon_header,
-            );
-          }}
-          onPageChange={(nextPage) => {
-            setLoading(true);
-            setError(null);
-            closeProtein();
-            setPage(nextPage);
-          }}
-          onPageSizeChange={(size) => {
-            setLoading(true);
-            setError(null);
-            closeProtein();
-            setPageSize(size);
-            setPage(1);
-          }}
+            entityNoun="operons"
+            toolbarLeading={toolbarLeading}
+            columns={COLUMNS}
+            gridTemplate="300px 80px minmax(1380px, 1fr)"
+            minWidth={1800}
+            rows={result.items}
+            total={result.total}
+            page={page}
+            pageSize={pageSize}
+            loading={loading}
+            error={error}
+            expandedRowId={expandedRowId}
+            getRowId={(operon) => operon.operon_header}
+            renderExpanded={(operon) => (
+              <OperonDetails operon={operon} onOpenProtein={openProtein} />
+            )}
+            onToggleRow={(operon) => {
+              setExpandedRowId((current) =>
+                current === operon.operon_header ? null : operon.operon_header,
+              );
+            }}
+            onPageChange={(nextPage) => {
+              setLoading(true);
+              setError(null);
+              closeProtein();
+              setPage(nextPage);
+            }}
+            onPageSizeChange={(size) => {
+              setLoading(true);
+              setError(null);
+              closeProtein();
+              setPageSize(size);
+              setPage(1);
+            }}
+            sortKey={sortKey}
+            sortDirection={sortDirection}
+            onSortChange={(key, direction) => {
+              setLoading(true);
+              setError(null);
+              closeProtein();
+              setSortKey(key);
+              setSortDirection(direction);
+              setPage(1);
+            }}
           />
         )}
       </div>

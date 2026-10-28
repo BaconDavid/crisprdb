@@ -13,12 +13,12 @@
   max-width: none;
   padding: 0 clamp(1rem, 2vw, 2rem);
   width: 100%;
-  font-size: clamp(1rem, 1.5vw, 1.525rem);
+  font-size: clamp(1rem, 2vw, 1.5rem);
 }
 
 .logo {
   color: #020617;
-  font-size: 1.125rem;
+  font-size: 2rem;
   font-weight: 600;
   letter-spacing: -0.025em;
   text-decoration: none;

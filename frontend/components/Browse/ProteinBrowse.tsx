@@ -2,7 +2,7 @@
 
 import { ArrowLeft, BarChart3, Box, Download, Play } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { type ReactNode, useEffect, useMemo, useState } from "react";
 
 import { FilterTab, type FilterSection } from "./FilterTab";
 import { BrowseTable, type BrowseColumn } from "./Tabel";
@@ -262,14 +262,17 @@ export function ProteinDetailView({
                 Run
               </Link>
             ) : (
-              <button
-                type="button"
+              <Link
+                href={{
+                  pathname: "/Analysis/embedding",
+                  query: { protein: protein.protein_header },
+                }}
                 className={styles.runProteinTool}
-                disabled
-                title="This analysis will be connected next"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 Run
-              </button>
+              </Link>
             )}
           </div>
         </div>
@@ -404,7 +407,13 @@ export function ProteinDetailView({
   );
 }
 
-export function ProteinBrowse() {
+export function ProteinBrowse({
+  initialProteinHeader,
+  toolbarLeading,
+}: {
+  initialProteinHeader?: string;
+  toolbarLeading?: ReactNode;
+}) {
   const [filterData, setFilterData] = useState<CasProteinFilterData | null>(null);
   const [filters, setFilters] = useState<BrowseFilters>({});
   const [result, setResult] = useState<CasProteinListResponse>({
@@ -415,9 +424,27 @@ export function ProteinBrowse() {
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(true);
   const [filterLoading, setFilterLoading] = useState(true);
-  const [detailLoading, setDetailLoading] = useState(false);
+  const [detailLoading, setDetailLoading] = useState(Boolean(initialProteinHeader));
   const [error, setError] = useState<string | null>(null);
   const [detailError, setDetailError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (!initialProteinHeader) return;
+
+    const controller = new AbortController();
+    fetchCasProtein(initialProteinHeader, ANNOTATION_SOURCE, controller.signal)
+      .then(setSelectedProtein)
+      .catch((requestError: Error) => {
+        if (requestError.name !== "AbortError") {
+          setError(`Unable to open protein detail: ${requestError.message}`);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setDetailLoading(false);
+      });
+
+    return () => controller.abort();
+  }, [initialProteinHeader]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -500,6 +527,7 @@ export function ProteinBrowse() {
       ) : (
         <BrowseTable
           entityNoun="proteins"
+          toolbarLeading={toolbarLeading}
           columns={COLUMNS}
           gridTemplate="minmax(260px, 2.1fr) 180px 110px minmax(240px, 1.9fr)"
           rows={result.items}

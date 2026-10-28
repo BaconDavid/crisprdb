@@ -15,10 +15,7 @@ export function CountryDistributionPanel({
   return (
     <article className={`${styles.panel} ${styles.mapPanel}`}>
       <div className={styles.panelHeader}>
-        <h2 className={styles.panelTitle}>Country sample distribution</h2>
-        <p className={styles.panelText}>
-          Country-level sample counts rendered from database records.
-        </p>
+        <h2 className={styles.panelTitle}>Country Sample Distribution</h2>
       </div>
 
       <CountryChoroplethMap countryDistribution={countryDistribution} />

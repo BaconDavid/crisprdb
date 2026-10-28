@@ -1,0 +1,255 @@
+.control {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-width: 88px;
+  padding: 1px;
+  border-radius: 11px;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 96%),
+    rgb(147 197 253 / 88%) 42%,
+    rgb(59 130 246 / 52%) 72%,
+    rgb(255 255 255 / 90%)
+  );
+  box-shadow:
+    0 7px 18px rgb(37 99 235 / 10%),
+    inset 0 1px 0 rgb(255 255 255 / 90%);
+}
+
+.control:focus-within {
+  z-index: 40;
+}
+
+.fullWidth {
+  width: 100%;
+}
+
+.trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  padding: 0 13px 0 14px;
+  border: 0;
+  border-radius: 10px;
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 94%),
+    rgb(248 250 252 / 78%) 55%,
+    rgb(239 246 255 / 72%)
+  );
+  color: #0f172a;
+  cursor: pointer;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 650;
+  line-height: 1;
+  text-align: left;
+  transition: background 180ms ease, box-shadow 180ms ease;
+}
+
+.medium {
+  height: 42px;
+}
+
+.large {
+  height: 46px;
+  font-size: 16px;
+}
+
+.accent {
+  color: #1d4ed8;
+}
+
+.trigger:not(:disabled):hover {
+  background: linear-gradient(
+    135deg,
+    rgb(255 255 255 / 98%),
+    rgb(239 246 255 / 84%)
+  );
+}
+
+.trigger:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 24%);
+  outline-offset: 2px;
+}
+
+.trigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.icon {
+  flex: 0 0 auto;
+  color: #64748b;
+  transition: transform 180ms ease;
+}
+
+.accent .icon {
+  color: #2563eb;
+}
+
+.iconOpen {
+  transform: rotate(180deg);
+}
+
+.listbox {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 50;
+  display: grid;
+  min-width: max(100%, 220px);
+  padding: 7px;
+  overflow: hidden;
+  border: 1px solid rgb(255 255 255 / 82%);
+  border-radius: 14px;
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 78%), rgb(219 234 254 / 58%)),
+    rgb(248 250 252 / 72%);
+  backdrop-filter: blur(22px) saturate(165%);
+  box-shadow:
+    0 22px 50px rgb(15 23 42 / 20%),
+    0 8px 18px rgb(37 99 235 / 12%),
+    inset 0 1px 0 rgb(255 255 255 / 92%);
+  animation: openListbox 160ms ease-out;
+  -webkit-backdrop-filter: blur(22px) saturate(165%);
+}
+
+.option {
+  display: grid;
+  grid-template-columns: 20px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  color: #1e293b;
+  cursor: pointer;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+}
+
+.optionIcon {
+  align-items: center;
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.optionImage {
+  height: 24px;
+  object-fit: contain;
+  width: 24px;
+}
+
+.option:hover,
+.option:focus-visible {
+  background: rgb(255 255 255 / 66%);
+  color: #1d4ed8;
+  outline: none;
+  box-shadow: inset 0 0 0 1px rgb(147 197 253 / 54%);
+}
+
+.optionSelected {
+  background: linear-gradient(135deg, rgb(239 246 255 / 82%), rgb(219 234 254 / 64%));
+  color: #1d4ed8;
+}
+
+.check {
+  opacity: 0;
+}
+
+.checkVisible {
+  color: #2563eb;
+  opacity: 1;
+}
+
+.accentListbox {
+  min-width: max(100%, 310px);
+  max-height: min(360px, 60vh);
+  padding: 6px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border-color: #e2e8f0;
+  border-radius: 16px;
+  background: #ffffff;
+  backdrop-filter: none;
+  box-shadow:
+    0 24px 54px rgb(15 23 42 / 18%),
+    0 8px 20px rgb(37 99 235 / 10%);
+  -webkit-backdrop-filter: none;
+}
+
+.accentListbox .option {
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 10px;
+  min-height: 68px;
+  padding: 6px 10px;
+  border-radius: 11px;
+  color: #334155;
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.accentListbox .option:hover,
+.accentListbox .option:focus-visible {
+  background: #eff6ff;
+  color: #1d4ed8;
+  box-shadow: none;
+}
+
+.accentListbox .optionSelected {
+  background: #dbeafe;
+  color: #1d4ed8;
+  box-shadow: inset 0 0 0 1px rgb(147 197 253 / 42%);
+}
+
+.accentListbox .option > span:last-child {
+  white-space: nowrap;
+}
+
+.accentListbox .optionIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 56px;
+  height: 56px;
+}
+
+.accentListbox .optionImage {
+  width: 56px;
+  height: 56px;
+  max-width: none;
+  max-height: none;
+  object-fit: fill;
+  object-position: left center;
+}
+
+@keyframes openListbox {
+  from {
+    opacity: 0;
+    transform: translateY(-5px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .trigger,
+  .icon,
+  .listbox {
+    animation: none;
+    transition: none;
+  }
+}

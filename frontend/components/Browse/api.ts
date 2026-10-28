@@ -135,6 +135,7 @@ export interface CasGenomeFilterData {
 }
 
 export type BrowseFilters = Record<string, string[]>;
+export type SortDirection = "asc" | "desc";
 
 const FILTER_HIERARCHIES = [
   ["crispr_class", "crispr_type", "crispr_subtype"],
@@ -216,11 +217,15 @@ export function fetchCasOperons(
   geneRange: [number, number] | null,
   page: number,
   pageSize: number,
+  sortBy: string,
+  sortDirection: SortDirection,
   signal?: AbortSignal,
 ) {
   const params = new URLSearchParams({ // URLSearchParms is used to deal with dirty params in the url
     page: String(page),
     page_size: String(pageSize),
+    sort_by: sortBy,
+    sort_direction: sortDirection,
   });
 
   appendFilters(params, filters);

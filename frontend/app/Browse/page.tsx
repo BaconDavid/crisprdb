@@ -4,15 +4,24 @@ import { Navigation } from "@/components/Home/Navigation";
 export default async function BrowsePage({
   searchParams,
 }: {
-  searchParams: Promise<{ entity?: string | string[] }>;
+  searchParams: Promise<{
+    entity?: string | string[];
+    protein?: string | string[];
+  }>;
 }) {
-  const entityParam = (await searchParams).entity;
-  const initialEntity: BrowseEntity = entityParam === "protein" ? "protein" : "operon";
+  const params = await searchParams;
+  const proteinHeader = typeof params.protein === "string" ? params.protein : undefined;
+  const initialEntity: BrowseEntity = proteinHeader || params.entity === "protein"
+    ? "protein"
+    : "operon";
 
   return (
     <div className="min-h-screen bg-[#f6f7f9] text-slate-950">
       <Navigation />
-      <Browse initialEntity={initialEntity} />
+      <Browse
+        initialEntity={initialEntity}
+        initialProteinHeader={proteinHeader}
+      />
     </div>
   );
 }
