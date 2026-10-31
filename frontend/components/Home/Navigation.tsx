@@ -1,11 +1,11 @@
 "use client";
 
 import styles from "@/css/Navigation.module.css";
-import { BarChart3, Home, Mail, Search } from "lucide-react";
+import { BarChart3, Database, Home, Mail, Search } from "lucide-react";
 
 import { useI18n } from "@/components/I18nProvider";
 
-type NavIconName = "home" | "analysis" | "search" | "contact";
+type NavIconName = "home" | "analysis" | "search" | "data" | "contact";
 
 const siteBrand = {
   name: "CRISPR Database",
@@ -24,6 +24,7 @@ function NavIcon({ name }: { name: NavIconName }) {
     home: Home,
     analysis: BarChart3,
     search: Search,
+    data: Database,
     contact: Mail,
   };
   const Icon = icons[name];
@@ -47,6 +48,7 @@ export function Navigation() {
       ],
     },
     { label: nav.search, href: "/Browse", icon: "search" },
+    { label: nav.data, href: "/Data", icon: "data" },
     { label: nav.contact, href: "#", icon: "contact" },
   ];
 

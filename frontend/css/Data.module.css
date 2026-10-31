@@ -1,0 +1,189 @@
+.page {
+  min-height: calc(100vh - 96px);
+  background: #f6f7f9;
+  color: #0f172a;
+}
+
+.pageHeader {
+  padding: 32px 28px 0;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pageHeader h1 {
+  margin: 0;
+  color: #020617;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.description {
+  max-width: 64ch;
+  margin: 8px 0 0;
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.content {
+  padding: 24px 28px 48px;
+}
+
+.tableCard,
+.status {
+  border: 1px solid #dfe5ee;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(15 23 42 / 4%);
+}
+
+.tableScroll {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 920px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.table th {
+  padding: 14px 16px;
+  border-bottom: 1px solid #dfe5ee;
+  background: #f8fafc;
+  color: #475569;
+  font-size: 11px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.table th:first-child {
+  border-top-left-radius: 12px;
+}
+
+.table th:last-child {
+  border-top-right-radius: 12px;
+}
+
+.table td {
+  padding: 18px 16px;
+  border-bottom: 1px solid #eef2f7;
+  color: #334155;
+  font-size: 13px;
+  line-height: 1.5;
+  vertical-align: top;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.titleLink {
+  display: inline-block;
+  color: #1d4ed8;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.titleLink:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.fileName {
+  display: block;
+  margin-top: 5px;
+  color: #64748b;
+  font-family: var(--font-geist-mono), monospace;
+  font-size: 11px;
+}
+
+.descriptionCell {
+  max-width: 440px;
+  color: #475569;
+}
+
+.actionColumn,
+.actionCell {
+  width: 132px;
+  text-align: right;
+}
+
+.downloadButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: #2563eb;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background-color 160ms ease;
+}
+
+.downloadButton:hover {
+  background: #1d4ed8;
+}
+
+.titleLink:focus-visible,
+.downloadButton:focus-visible {
+  outline: 3px solid rgb(37 99 235 / 28%);
+  outline-offset: 3px;
+}
+
+.status {
+  padding: 28px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.error {
+  border-color: #fecaca;
+  background: #fff7f7;
+  color: #b91c1c;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 640px) {
+  .pageHeader {
+    padding: 24px 16px 0;
+  }
+
+  .pageHeader h1 {
+    font-size: 30px;
+  }
+
+  .content {
+    padding: 20px 16px 36px;
+  }
+}

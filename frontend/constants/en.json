@@ -11,11 +11,28 @@
     "home": "Home",
     "analysis": "Analysis",
     "search": "Browse",
+    "data": "Data",
     "contact": "Contact",
     "blastp": "BLASTP",
     "embedding": "Embedding Search",
     "structure": "Structure Module",
     "switchLanguage": "Switch to Chinese"
+  },
+  "data": {
+    "eyebrow": "Download data",
+    "title": "Data Downloads",
+    "description": "Download the available CRISPR-Cas datasets and database resources.",
+    "columns": {
+      "title": "Dataset",
+      "description": "Description",
+      "source": "Source",
+      "version": "Version",
+      "download": "Download"
+    },
+    "loading": "Loading available data…",
+    "empty": "No data is currently available.",
+    "error": "Unable to load available data.",
+    "download": "Download"
   },
   "browse": {
     "eyebrow": "Browse the database",

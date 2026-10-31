@@ -1,0 +1,32 @@
+available_data:
+  cas_operons_meta.csv.gz:
+    title: Cas operons
+    description: This file includes Cas operons annotated from NCBI RefSeq complete genomes by CCTyper.
+    source: NCBI RefSeq Complete Genomes
+    version: "RefSeq complete genomes from 2026.06; CCTyper 1.8.0"
+    storage_path: /mnt/yizhou/Projects/CRISPR/crisprdb/crisprdb/backend/test_data/cas_operons_meta.csv.gz
+    sha256: 0bdd572935a6c858e6d4ec683298a7be0281bf3a1dac71bec897f8b5be03e981
+
+  flsh_refseq_2026_0610_crispr_array_info.csv.gz:
+    title: CRISPR Array Annotations
+    description: This dataset contains CRISPR array annotations from RefSeq complete genomes and FLSH contigs.
+    source: NCBI RefSeq Complete Genomes and FLSH contigs
+    version: "RefSeq complete genomes from 2026.06"
+    storage_path: /mnt/yizhou/Projects/CRISPR/crisprdb/crisprdb/backend/test_data/flsh_refseq_2026_0610_crispr_array_info.csv.gz
+    sha256: de4b25e6997c254544f82cffcd207f1416362cfa6dc1a521b907c9922d88add1
+
+  interpro_scan.tsv.gz:
+    title: InterPro Scan Results
+    description: This dataset contains InterProScan results for protein sequences extracted from Cas operons annotated by CCTyper.
+    source: null
+    version: "InterProScan 5.75-106.0"
+    storage_path: /mnt/yizhou/Projects/CRISPR/crisprdb/crisprdb/backend/test_data/interproscan.tsv.gz
+    sha256: be3b7f83458dd70ee44f2ab5b5cc9fba1e6561b8263318c27c282ef29e5ac721
+
+  crisprdb.dump.gz:
+    title: PostgreSQL Database
+    description: This dataset contains the PostgreSQL database dump for the CRISPR database.
+    source: null
+    version: "2026.10"
+    storage_path: /mnt/yizhou/Projects/CRISPR/crisprdb/crisprdb/backend/test_data/crisprdb.dump.gz
+    sha256: b47a244a14f500cfed111a8b26ba2dc160e3b6d65b7753631e8c9be999530da2
